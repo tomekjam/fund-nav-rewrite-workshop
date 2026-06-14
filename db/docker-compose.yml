@@ -1,0 +1,42 @@
+services:
+  # SQL Server for the legacy module. Synthetic data only, local workshop use.
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: fundnav-mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      # Local-only workshop password. Real deployments must NOT hardcode secrets.
+      MSSQL_SA_PASSWORD: "Workshop_Passw0rd!"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+  # One-shot job: waits for the server, then applies schema.sql + seed.sql.
+  init:
+    image: mcr.microsoft.com/mssql-tools:latest
+    container_name: fundnav-init
+    depends_on:
+      - mssql
+    volumes:
+      - ./schema.sql:/sql/schema.sql:ro
+      - ./seed.sql:/sql/seed.sql:ro
+    entrypoint: >
+      /bin/bash -c "
+      echo 'waiting for SQL Server...';
+      for i in {1..60}; do
+        /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Workshop_Passw0rd!' -Q 'SELECT 1' -b >/dev/null 2>&1 && break;
+        sleep 2;
+      done;
+      echo 'creating database FundNav...';
+      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Workshop_Passw0rd!' -Q \"IF DB_ID('FundNav') IS NULL CREATE DATABASE FundNav;\";
+      echo 'applying schema...';
+      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Workshop_Passw0rd!' -d FundNav -i /sql/schema.sql -b;
+      echo 'applying seed...';
+      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Workshop_Passw0rd!' -d FundNav -i /sql/seed.sql -b;
+      echo 'done.';
+      "
+
+volumes:
+  mssql-data:

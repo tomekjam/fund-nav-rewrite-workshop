@@ -1,0 +1,20 @@
+# Facilitator-only materials -- NOT for participants.
+/facilitator/
+
+# Characterization run output
+/out/
+
+# .NET build artifacts
+**/bin/
+**/obj/
+
+# Java / Maven build artifacts
+**/target/
+
+# IDE
+.idea/
+.vs/
+*.user
+
+# OS
+.DS_Store
