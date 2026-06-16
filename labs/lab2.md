@@ -1,3 +1,5 @@
+> Nawigacja: [← Lab 1](lab1.md) · **Lab 2** · [Lab 3 →](lab3.md) · [↑ README](../README.md)
+
 # Lab 2 — Wyciągnięcie domeny: intencja vs framework
 
 **Cel:** Zrozumieć, **co** moduł legacy naprawdę robi (reguły domeny), oddzielając
@@ -104,3 +106,7 @@ z nich nie korzysta — to część kontekstu domeny.
 
 > Klasyfikacja kwirków (reguła vs błąd) to **decyzja człowieka**. Narzędzie
 > pomoże ją nazwać, ale nie powinno jej podejmować za Ciebie.
+
+---
+
+➡️ **Następny:** [Lab 3 — Spec-driven: przepisanie modułu na Java Spring Boot](lab3.md)

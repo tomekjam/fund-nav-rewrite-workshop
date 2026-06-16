@@ -1,3 +1,5 @@
+> Nawigacja: **Lab 1** · [Lab 2 →](lab2.md) · [Lab 3 →](lab3.md) · [↑ README](../README.md)
+
 # Lab 1 — `AGENTS.md`: kontekst projektu dla agenta
 
 **Cel:** Zanim poprosisz asystenta AI o przepisanie czegokolwiek, dajesz mu
@@ -126,3 +128,7 @@ Minimalny słownik, żeby agent rozumiał o czym mowa:
 
 > Niezależnie od narzędzia: **przejrzyj wygenerowany tekst zdanie po zdaniu.**
 > `AGENTS.md` to Twoja umowa z agentem — odpowiadasz za jego treść.
+
+---
+
+➡️ **Następny:** [Lab 2 — Wyciągnięcie domeny: intencja vs framework](lab2.md)

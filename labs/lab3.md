@@ -1,3 +1,5 @@
+> Nawigacja: [← Lab 1](lab1.md) · [← Lab 2](lab2.md) · **Lab 3** · [↑ README](../README.md)
+
 # Lab 3 — Spec-driven: przepisanie modułu na Java Spring Boot
 
 **Cel:** Przepisać moduł NAV/opłat na **Java Spring Boot**, zachowując

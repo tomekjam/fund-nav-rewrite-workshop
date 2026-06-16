@@ -9,6 +9,15 @@ zachowanie**, opierając się o **testy charakteryzujące**.
 > To repo startowe celowo **nie** zawiera: `AGENTS.md`, mapy pojęć stare→nowe
 > ani projektu Java. To są *produkty labów* — tworzysz je sam.
 
+## 🚀 Start tutaj
+
+1. **Przygotowanie:** przejdź [`SETUP.md`](SETUP.md) — instalacja narzędzi i test środowiska (zrób przed warsztatem).
+2. **Sprawdź, że legacy działa:** uruchom [Szybki start](#szybki-start) — baza + `run_legacy.sh` powinien wypisać `OK`.
+3. **Rób laby po kolei** — to są instrukcje krok po kroku (folder `labs/`):
+   **[Lab 1](labs/lab1.md) → [Lab 2](labs/lab2.md) → [Lab 3](labs/lab3.md)**.
+
+Każdy lab ma listę **zadań** i **Definicję ukończenia (DoD)** — checklistę „skończone, gdy…”.
+
 ---
 
 ## Scenariusz
