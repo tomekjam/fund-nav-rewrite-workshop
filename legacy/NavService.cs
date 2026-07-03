@@ -125,7 +125,10 @@ namespace FundNav.Legacy
                         continue;
                     }
 
-                    // An incidental audit line -- uses the weak MD5 hash.
+                    // Weak MD5 "client reference". The audit log line that
+                    // consumed it was removed years ago, but the call stayed --
+                    // classic legacy dead code. It never feeds the NAV / fee
+                    // numbers; a security review must still flag the MD5.
                     string clientRef = LegacyHash.ClientRef(sc.ShareClassId, _auditSalt);
 
                     results.Add(new NavResult

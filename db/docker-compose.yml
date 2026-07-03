@@ -9,13 +9,18 @@ services:
       MSSQL_SA_PASSWORD: "Workshop_Passw0rd!"
       MSSQL_PID: "Developer"
     ports:
-      - "1433:1433"
+      # Host port is configurable: if 1433 is taken, run e.g.
+      #   FUNDNAV_DB_PORT=14330 docker compose -f db/docker-compose.yml up -d
+      # and point the legacy module at it via the FUNDNAV_CONNECTION env var.
+      - "${FUNDNAV_DB_PORT:-1433}:1433"
     volumes:
       - mssql-data:/var/opt/mssql
 
   # One-shot job: waits for the server, then applies schema.sql + seed.sql.
+  # Uses the sqlcmd (mssql-tools18) bundled in the same server image, so no
+  # extra image is needed. -C trusts the server's self-signed certificate.
   init:
-    image: mcr.microsoft.com/mssql-tools:latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: fundnav-init
     depends_on:
       - mssql
@@ -26,15 +31,15 @@ services:
       /bin/bash -c "
       echo 'waiting for SQL Server...';
       for i in {1..60}; do
-        /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Workshop_Passw0rd!' -Q 'SELECT 1' -b >/dev/null 2>&1 && break;
+        /opt/mssql-tools18/bin/sqlcmd -C -S mssql -U sa -P 'Workshop_Passw0rd!' -Q 'SELECT 1' -b >/dev/null 2>&1 && break;
         sleep 2;
       done;
       echo 'creating database FundNav...';
-      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Workshop_Passw0rd!' -Q \"IF DB_ID('FundNav') IS NULL CREATE DATABASE FundNav;\";
+      /opt/mssql-tools18/bin/sqlcmd -C -S mssql -U sa -P 'Workshop_Passw0rd!' -Q \"IF DB_ID('FundNav') IS NULL CREATE DATABASE FundNav;\" -b;
       echo 'applying schema...';
-      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Workshop_Passw0rd!' -d FundNav -i /sql/schema.sql -b;
+      /opt/mssql-tools18/bin/sqlcmd -C -S mssql -U sa -P 'Workshop_Passw0rd!' -d FundNav -i /sql/schema.sql -b;
       echo 'applying seed...';
-      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Workshop_Passw0rd!' -d FundNav -i /sql/seed.sql -b;
+      /opt/mssql-tools18/bin/sqlcmd -C -S mssql -U sa -P 'Workshop_Passw0rd!' -d FundNav -i /sql/seed.sql -b;
       echo 'done.';
       "
 

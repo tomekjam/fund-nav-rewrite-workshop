@@ -16,7 +16,9 @@ języku C#.
 | **Edytor + asystent AI** | praca z kodem | VS Code + GitHub Copilot, albo Factory.ai, albo Augment |
 
 > Na macOS najłatwiej przez Homebrew:
-> `brew install git maven temurin@21 dotnet-sdk` oraz Docker Desktop ręcznie.
+> `brew install git maven temurin@21 dotnet-sdk@8` oraz Docker Desktop ręcznie.
+> Uwaga: musi być `dotnet-sdk@8` — samo `dotnet-sdk` instaluje najnowszą wersję
+> SDK, a moduł legacy wymaga .NET 8.
 > Na Windows: instalatory z linków powyżej (lub `winget`).
 
 ## 2. Sprawdź, że masz wszystko
@@ -55,6 +57,15 @@ OK: legacy output matches the characterization baseline.
 ```
 Jeśli tak — jesteś gotowy. Jeśli nie — zgłoś to prowadzącemu **przed**
 warsztatem, podając komunikat błędu.
+
+> **Port 1433 zajęty?** (błąd `Bind for 0.0.0.0:1433 failed: port is already
+> allocated`) — masz już inny SQL Server na tym porcie. Uruchom bazę warsztatu
+> na innym porcie i wskaż go modułowi legacy:
+> ```bash
+> FUNDNAV_DB_PORT=14330 docker compose -f db/docker-compose.yml up -d
+> export FUNDNAV_CONNECTION="Server=localhost,14330;Database=FundNav;User Id=sa;Password=Workshop_Passw0rd!;TrustServerCertificate=True;Encrypt=False"
+> ./golden/run_legacy.sh
+> ```
 
 > Pierwsze uruchomienie Dockera pobiera obraz SQL Server (kilka minut) — zrób to
 > wcześniej, nie na sali.
